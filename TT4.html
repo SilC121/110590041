@@ -29,6 +29,14 @@ function reset(){
 	document.getElementById("Test").style.border="1px#ccc solid";
 	document.getElementById("Test").style.borderSpacing="1px";
 }
+function Chan200px(){
+	document.getElementById("Test").classList.add="table200";
+	document.getElementById("Test").classList.remove="table500";
+}
+function Chan500px(){
+	document.getElementById("Test").classList.add="table500";
+	document.getElementById("Test").classList.remove="table200";
+}
 </script>
 <body>
 
@@ -88,9 +96,8 @@ function reset(){
 	</tr>
 	</table>
 <p>Change The Table Width</p>
-	<input type="button"onclick="ChanColor()"value="">
-	<input type="button"onclick="ChanColog()"value="">
-	<input type="button"onclick="ChanColob()"value="">
+	<input type="button"onclick="Chan200px()"value="">
+	<input type="button"onclick="Chan500px()"value="">
 <p>Change The Border and the Spacing Width</p>
 	<input type="button"onclick="ChanB1()"value="1px">
 	<input type="button"onclick="ChanB10()"value="10px">
