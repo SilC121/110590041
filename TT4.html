@@ -3,6 +3,9 @@
 function ChanColor(){
 	document.getElementById("Test").style.backgroundColor ="red";
 }
+function ChanColor(){
+	document.getElementById("Test").style.backgroundColor ="red";
+}
 function ChanColob(){
 	document.getElementById("Test").style.backgroundColor ="blue";
 }
@@ -11,15 +14,20 @@ function ChanColog(){
 }
 function ChanB10(){
 	document.getElementById("Test").style.border="10px#ccc solid";
+	document.getElementById("Test").style.borderSpacing="10px";
 }
 function ChanB20(){
 	document.getElementById("Test").style.border="20px#ccc solid";
+	document.getElementById("Test").style.borderSpacing="20px";
 }
 function ChanB1(){
 	document.getElementById("Test").style.border="10px#ccc solid";
+	document.getElementById("Test").style.borderSpacing="1px";
 }
 function reset(){
 	document.getElementById("Test").style.backgroundColor ="yellow";
+	document.getElementById("Test").style.border="1px#ccc solid";
+	document.getElementById("Test").style.borderSpacing="1px";
 }
 </script>
 <body>
@@ -28,6 +36,8 @@ function reset(){
 	#Test{
 		border:1px #ccc solid;
 		background-color:yellow;
+		border-spacing:1px;
+		
 	}
 	ul.top{
 		background-color:blue;
