@@ -1,7 +1,7 @@
 <html>
 <script>
-function ChanColo(){
-	document.getElementById("Test").style.backgroundColor = "blue";
+function ChanColo(x){
+	document.getElementById("Test").style.backgroundColor = x;
 }
 </script>
 <body>
@@ -61,12 +61,11 @@ function ChanColo(){
 	</tr>
 	</table>
 <p>Change The Table Width</p>
-	<input type="button"onclick="ChanColo()"value="">
+	<input type="button"onclick="ChanColo("blue")"value="">
 <p>Change The Border and the Spacing Width</p>
 <p>Change The Table Color</p>
-<button type="button"onclick="document.getElementById("Test").style.backgroundColor ='blue'">change to blue</button>
-<button type="button"onclick="document.getElementById("Test").style.backgroundColor ='Red'">change to red</button>
-<button type="button"onclick="document.getElementById("Test").style.backgroundColor ='green'">change to green</button>
+	<input type="button"onclick="ChanColo("Red")"value="">
+	<input type="button"onclick="ChanColo("Green")"value="">
 
 </body>
   </html>
