@@ -181,7 +181,6 @@ function preview()
 function replayGame()
 {
     if(gameState!=1)return;
-    if(!confirm("Really want to re-start the game?"))return;
     gameState=0;
     window.clearInterval(mTimer);
     beginGame();
@@ -439,7 +438,11 @@ function randBar()
     </tbody>
     </table>
 </td>
-<td valign="top" align="center" style="padding: 10 10 0 10" bgcolor="#466285">
+
+</tr>
+</table>
+</td></tr></table>
+    <td valign="top" align="center" style="padding: 10 10 0 10" bgcolor="#466285">
     <table cellspacing=0 cellpadding=0 border=0>
     <tr><td><font size=5 color=red face=consolas>Tetris</font></td></tr>
     </table>
@@ -459,9 +462,6 @@ function randBar()
         <tr><td id=speedBar style="color:#FFFFFF">Speed : 1</td></tr>
     </table>
 </td>
-</tr>
-</table>
-</td></tr></table>
 </BODY>
 </HTML>
 <script>
