@@ -55,10 +55,7 @@ function beginGame(){
     randBar();
     window.clearInterval(mTimer);
     mTimer=window.setInterval("moveBar()",1000);
-    Play.disabled=true;
-   
 }
- 
 function keyControl(x)
 {
     if(gameState!=1)return;
@@ -311,7 +308,6 @@ function randBar()
         if(getClass(PX[i],PY[i])!="BK"){
             window.clearInterval(mTimer);
             gameState=0;
-            Play.disabled=false;
             return;
         }
     }
