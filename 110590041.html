@@ -62,7 +62,13 @@ function beginGame()
     window.clearInterval(mTimer);
     mTimer=window.setInterval("moveBar()",outTime);
 }
- 
+function preview()
+{
+    if(previewWnd.style.display!="none")
+        previewWnd.style.display="none";
+    else
+        previewWnd.style.display="block";
+}
 function keyControl()
 {
     if(gameState!=1)return;
