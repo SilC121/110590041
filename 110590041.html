@@ -41,8 +41,8 @@
 <script>
 <!--
 
-var PX=new Array(4);
-var PY=new Array(4);
+var PX=new Array(12);
+var PY=new Array(12);
 var gameState = 0;
 var mTimer
 function beginGame()
@@ -172,6 +172,10 @@ function randBar()
             PY[2]=1;
             PX[3]=6;
             PY[3]=1;
+            for(i=0;i<8;i++){
+                PX[4+i]=4;
+                PY[4+i]=0;
+            }
             break;}
         case 2:{
             PX[0]=3;
