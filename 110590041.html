@@ -1,32 +1,36 @@
 <HTML>
 <HEAD>
 <title>Tetris</title>
-<script>window.resizeTo(410,450)</script>
+<script>window.resizeTo(500,600)</script>
 <style>
 <!--
 .MB
 {
-    BACKGROUND-COLOR: firebrick;
+    BACKGROUND-COLOR:#00ACE0;
     CURSOR: default;
     HEIGHT: 22px;
-    WIDTH: 22px
+    WIDTH: 22px;
+    
 }
 .SB
 {
     BACKGROUND-COLOR: slategray;
     CURSOR: default;
     HEIGHT: 22px;
-    WIDTH: 22px
+    WIDTH: 22px;
+    
 }
 .BK
 {
     BACKGROUND-COLOR: white;
     CURSOR: default;
     HEIGHT: 22px;
-    WIDTH: 22px
+    WIDTH: 22px;
+    
 }
 .GT
 {
+    BORDER:10px;
     BORDER-BOTTOM: deepskyblue thin solid;
     BORDER-LEFT: deepskyblue thin solid;
     BORDER-RIGHT: deepskyblue thin solid;
@@ -37,77 +41,71 @@
 </style>
 <script>
 <!--
-var BX=new Array(4);
-var BY=new Array(4);
+
 var PX=new Array(4);
 var PY=new Array(4);
-var mTimer
-var firstView
 var gameState = 0;
- 
+var mTimer
 function beginGame()
 {
-    gameState=0;
-    speed=1;
-    outTime=1100-speed*100;
     score=0;
-    if(gameState!=0)return;
-    firstView=true;
+    gameState=0;
     for(j=0;j<16;j++)
         for(i=0;i<10;i++)
-            setClass(i,j,"BK");
-    randBar();
+            setClass(i,j,"BK"); 
     gameState=1;
-    Play.disabled=true;
+    randBar();
     window.clearInterval(mTimer);
-    mTimer=window.setInterval("moveBar()",outTime);
+    mTimer=window.setInterval("moveBar()",1000);
+    Play.disabled=true;
 }
  
-function keyControl()
+function keyControl(x)
 {
     if(gameState!=1)return;
-    switch(event.keyCode){
-        case 37:{    //left
-            for(i=0;i<4;i++)if(BX[i]==0)return;
-            for(i=0;i<4;i++)if(getClass(BX[i]-1,BY[i])=="SB")return;
-            for(i=0;i<4;i++)setClass(BX[i],BY[i],"BK");
-            for(i=0;i<4;i++)BX[i]=BX[i]-1;
-            for(i=0;i<4;i++)setClass(BX[i],BY[i],"MB");
+    switch(x){
+        case 1:{    //left
+            for(i=0;i<4;i++)if(PX[i]==0)return;
+            for(i=0;i<4;i++)if(getClass(PX[i]-1,PY[i])=="SB")return;
+            for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
+            for(i=0;i<4;i++)PX[i]=PX[i]-1;
+            for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
             break;}
-        case 38:{    //up
+            
+        case 2:{    //right
+            for(i=0;i<4;i++)if(PX[i]==9)return;
+            for(i=0;i<4;i++)if(getClass(PX[i]+1,PY[i])=="SB")return;
+            for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
+            for(i=0;i<4;i++)PX[i]=PX[i]+1;
+            for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
+            break;}
+        case 3:{    //down
+            moveBar();
+            break;}
+        case 4:{    //R
             var preMBarX=new Array(4);
             var preMBarY=new Array(4);
-            var cx=Math.round((BX[0]+BX[1]+BX[2]+BX[3])/4);
-            var cy=Math.round((BY[0]+BY[1]+BY[2]+BY[3])/4);
+            var cx=Math.round((PX[0]+PX[1]+PX[2]+PX[3])/4);
+            var cy=Math.round((PY[0]+PY[1]+PY[2]+PY[3])/4);
             for(i=0;i<4;i++){
-                preMBarX[i]=Math.round(cx-cy+BY[i]);
-                preMBarY[i]=Math.round(cx+cy-BX[i]);
+                preMBarX[i]=Math.round(cx-cy+PY[i]);
+                preMBarY[i]=Math.round(cx+cy-PX[i]);
                 if(preMBarX[i]<0 || preMBarX[i]>9 || preMBarY[i]<0 || preMBarY[i]>15)return;
                 if(getClass(preMBarX[i],preMBarY[i])=="SB")return;
             }
-            for(i=0;i<4;i++)setClass(BX[i],BY[i],"BK");
+            for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
             for(i=0;i<4;i++){
-                BX[i]=preMBarX[i];
-                BY[i]=preMBarY[i];
+                PX[i]=preMBarX[i];
+                PY[i]=preMBarY[i];
             }
-            for(i=0;i<4;i++)setClass(BX[i],BY[i],"MB");
-            break;}
-        case 39:{    //right
-            for(i=0;i<4;i++)if(BX[i]==9)return;
-            for(i=0;i<4;i++)if(getClass(BX[i]+1,BY[i])=="SB")return;
-            for(i=0;i<4;i++)setClass(BX[i],BY[i],"BK");
-            for(i=0;i<4;i++)BX[i]=BX[i]+1;
-            for(i=0;i<4;i++)setClass(BX[i],BY[i],"MB");
-            break;}
-        case 40:{    //down
-            moveBar();
+          for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
             break;}
     }
 }
  
 function delLine()
 {
-    for(i=0;i<4;i++)setClass(BX[i],BY[i],"SB");
+    for(i=0;i<4;i++)setClass(PX[i],PY[i],"SB");
     for(j=0;j<16;j++){
         dLine=true;
         for(i=0;i<10;i++){
@@ -117,20 +115,17 @@ function delLine()
             }
         }
         if(dLine){
-            score=score+100;
             for(k=j;k>0;k--)
                 for(l=0;l<10;l++)
                     setClass(l,k,getClass(l,k-1));
             for(l=0;l<10;l++)setClass(l,0,"BK");
         }
     }
+    
     randBar();
-    speed=Math.floor(score/3000)+1;
-    outTime=1100-speed*100;
     scoreBar.innerHTML="Score : " + score;
-    speedBar.innerHTML="Speed : " + speed;
     window.clearInterval(mTimer);
-    mTimer=window.setInterval("moveBar()",outTime);
+    mTimer=window.setInterval("moveBar()",1000);
 }
  
 function getClass(x,y){return GameBar.children[y].children[x].className;}
@@ -140,60 +135,32 @@ function moveBar()
 {
     if(gameState!=1)return;
     dropLine=true;
-    for(i=0;i<4;i++)if(BY[i]==15)dropLine=false;
-    if(dropLine)for(i=0;i<4;i++)if(getClass(BX[i],BY[i]+1)=="SB")dropLine=false;
+    for(i=0;i<4;i++)if(PY[i]==15)dropLine=false;
+    if(dropLine)for(i=0;i<4;i++)if(getClass(PX[i],PY[i]+1)=="SB")dropLine=false;
     if(!dropLine){
         window.clearInterval(mTimer);
         delLine();
         return;
     }
-    for(i=0;i<4;i++)setClass(BX[i],BY[i],"BK");
-    for(i=0;i<4;i++)BY[i]=BY[i]+1;
-    for(i=0;i<4;i++)setClass(BX[i],BY[i],"MB");
+    for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
+    for(i=0;i<4;i++)PY[i]=PY[i]+1;
+    for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
 }
- 
-function pauseGame()
-{
-    if(gameState==0)return;
-    if(event.srcElement.value=="Pause"){
-        gameState=2;
-        event.srcElement.value="Continue";
-        window.clearInterval(mTimer);
-    }
-    else{
-        gameState=1;
-        event.srcElement.value="Pause";
-        mTimer=window.setInterval("moveBar()",outTime);
-    }
-}
- 
+
 function fMnu(){return false;}
 document.oncontextmenu=fMnu;
  
-function preview()
+function resetGame()
 {
-    if(previewWnd.style.display!="none")
-        previewWnd.style.display="none";
-    else
-        previewWnd.style.display="block";
-}
- 
-function replayGame()
-{
-    if(gameState!=1)return;
-    if(!confirm("Really want to re-start the game?"))return;
     gameState=0;
     window.clearInterval(mTimer);
     beginGame();
 }
 function randBar()
 {
-    randNum=Math.floor(Math.random()*20)+1;
-    if(!firstView)
-        for(i=0;i<4;i++){
-            BX[i]=PX[i];
-            BY[i]=PY[i];
-        }
+   score=score+1;
+   scoreBar.innerHTML="Score : " + score;
+   randNum=Math.floor(Math.random()*5)+1;
     switch(randNum){
         case 1:{
             PX[0]=4;
@@ -206,209 +173,48 @@ function randBar()
             PY[3]=1;
             break;}
         case 2:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=0;
-            PX[2]=4;
+            PX[0]=3;
+            PY[0]=1;
+            PX[1]=4;
+            PY[1]=1;
+            PX[2]=5;
             PY[2]=1;
-            PX[3]=4;
-            PY[3]=2;
+            PX[3]=6;
+            PY[3]=1;
             break;}
         case 3:{
-            PX[0]=4;
+            PX[0]=5;
             PY[0]=0;
-            PX[1]=5;
-            PY[1]=0;
-            PX[2]=6;
-            PY[2]=0;
+            PX[1]=4;
+            PY[1]=1;
+            PX[2]=5;
+            PY[2]=1;
             PX[3]=6;
             PY[3]=1;
             break;}
         case 4:{
-            PX[0]=5;
+            PX[0]=4;
             PY[0]=0;
-            PX[1]=5;
+            PX[1]=4;
             PY[1]=1;
             PX[2]=5;
-            PY[2]=2;
-            PX[3]=4;
-            PY[3]=2;
+            PY[2]=1;
+            PX[3]=5;
+            PY[3]=0;
             break;}
         case 5:{
-            PX[0]=6;
-            PY[0]=0;
-            PX[1]=6;
-            PY[1]=1;
-            PX[2]=4;
-            PY[2]=1;
-            PX[3]=5;
-            PY[3]=1;
-            break;}
-        case 6:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=4;
-            PY[1]=1;
-            PX[2]=4;
-            PY[2]=2;
-            PX[3]=5;
-            PY[3]=2;
-            break;}
-        case 7:{
-            PX[0]=4;
+            PX[0]=5;
             PY[0]=0;
             PX[1]=4;
             PY[1]=1;
             PX[2]=5;
-            PY[2]=0;
+            PY[2]=1;
             PX[3]=6;
             PY[3]=0;
             break;}
-        case 8:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=0;
-            PX[2]=5;
-            PY[2]=1;
-            PX[3]=5;
-            PY[3]=2;
-            break;}
-        case 9:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=0;
-            PX[2]=5;
-            PY[2]=1;
-            PX[3]=6;
-            PY[3]=1;
-            break;}
-        case 10:{
-            PX[0]=5;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=1;
-            PX[2]=4;
-            PY[2]=1;
-            PX[3]=4;
-            PY[3]=2;
-            break;}
-        case 11:{
-            PX[0]=4;
-            PY[0]=1;
-            PX[1]=5;
-            PY[1]=1;
-            PX[2]=5;
-            PY[2]=0;
-            PX[3]=6;
-            PY[3]=0;
-            break;}
-        case 12:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=4;
-            PY[1]=1;
-            PX[2]=5;
-            PY[2]=1;
-            PX[3]=5;
-            PY[3]=2;
-            break;}
-        case 13:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=0;
-            PX[2]=6;
-            PY[2]=0;
-            PX[3]=5;
-            PY[3]=1;
-            break;}
-        case 14:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=4;
-            PY[1]=1;
-            PX[2]=4;
-            PY[2]=2;
-            PX[3]=5;
-            PY[3]=1;
-            break;}
-        case 15:{
-            PX[0]=5;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=1;
-            PX[2]=4;
-            PY[2]=1;
-            PX[3]=6;
-            PY[3]=1;
-            break;}
-        case 16:{
-            PX[0]=5;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=1;
-            PX[2]=5;
-            PY[2]=2;
-            PX[3]=4;
-            PY[3]=1;
-            break;}
-        case 17:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=0;
-            PX[2]=4;
-            PY[2]=1;
-            PX[3]=5;
-            PY[3]=1;
-            break;}
-        case 18:{
-            PX[0]=4;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=0;
-            PX[2]=4;
-            PY[2]=1;
-            PX[3]=5;
-            PY[3]=1;
-            break;}
-        case 19:{
-            PX[0]=3;
-            PY[0]=0;
-            PX[1]=4;
-            PY[1]=0;
-            PX[2]=5;
-            PY[2]=0;
-            PX[3]=6;
-            PY[3]=0;
-            break;}
-        case 20:{
-            PX[0]=5;
-            PY[0]=0;
-            PX[1]=5;
-            PY[1]=1;
-            PX[2]=5;
-            PY[2]=2;
-            PX[3]=5;
-            PY[3]=3;
-            break;}
-    }
-    if(firstView){
-        firstView=false;
-        randBar();
-        return;
     }
     for(i=0;i<4;i++){
-        for(j=0;j<4;j++){
-            previewBar.children[j].children[i].className="BK";
-        }
-    }
-    for(i=0;i<4;i++)previewBar.children[PY[i]].children[PX[i]-3].className="MB";
-    for(i=0;i<4;i++){
-        if(getClass(BX[i],BY[i])!="BK"){
+        if(getClass(PX[i],PY[i])!="BK"){
             alert("Game Over!");
             window.clearInterval(mTimer);
             Play.disabled=false;
@@ -416,18 +222,22 @@ function randBar()
             return;
         }
     }
-    for(i=0;i<4;i++)setClass(BX[i],BY[i],"MB");
+    for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
 }
 // -->
 </script>
 </HEAD>
- 
-<BODY bgcolor="#EAF0F8" onkeydown="return keyControl();" topmargin="10" leftmargin="10" rightmargin="10" bottommargin="0" scroll=no>
+ <body onkeydown="return keyControl();" topmargin="10" leftmargin="10" rightmargin="10" bottommargin="0" scroll=no>
+   <table cellspacing=0 cellpadding=0 border=0 align="center">
+    <tr><td><font size=5 color=red face=consolas>Tetris</font></td></tr>
+      <tr><td id=scoreBar style="color:#000000">Score : 0</td></tr>
+    </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" height="100%"><tr><td width="100%" height="100%" align="center">
-<table cellspacing=2 cellpadding=0 class=gt border=0 bordercolor="#EAF0F8" bgcolor="#EAF0F8">
+<table cellspacing=2 cellpadding=0 class=gt border=0 bordercolor="#000000" bgcolor="#000000">
 <tr>
 <td valign="top">
-    <table cellspacing=0 cellpadding=0 class=gt border=1 bordercolor="#EAF0F8" style="">
+    
+    <table cellspacing=0 cellpadding=0 class=gt border=1 bordercolor="#EE0987" style="">
     <Tbody id=GameBar>
     <tr><td nowrap class=BK> </td><td nowrap class=BK> </td><td nowrap class=BK> </td><td nowrap class=BK> </td><td nowrap class=BK> </td><td nowrap class=BK>
     </td><td nowrap class=BK> </td><td nowrap class=BK> </td><td nowrap class=BK> </td><td nowrap class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK>
@@ -436,33 +246,18 @@ function randBar()
     </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK>
     </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK>
     </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr>
-    </tbody>
     </table>
-</td>
-<td valign="top" align="center" style="padding: 10 10 0 10" bgcolor="#466285">
-    <table cellspacing=0 cellpadding=0 border=0>
-    <tr><td><font size=5 color=red face=consolas>Tetris</font></td></tr>
-    </table>
-    <table id="previewWnd" cellspacing=0 cellpadding=0 class=gt border=1 bordercolor="#EAF0F8" bgcolor="#EAF0F8" style="margin-top:15">
-    <Tbody id="previewBar">
-    <tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr><tr><td class=BK> </td><td class=BK> </td><td class=BK> </td><td class=BK> </td></tr>
-    </tbody>
-    </table>
-    <table cellspacing=3 cellpadding=0 border=0 style="margin-top:15">
-        <tr><td><input type=button id="Play" style="font-family:Tahoma; font-size:9pt; width:100px" value="Play" onclick="return beginGame();"></td></tr>
-        <tr><td><input type=button id="Pause" style="font-family:Tahoma; font-size:9pt; width:100px" value="Pause" onclick="return pauseGame();"></td></tr>
-        <tr><td><input type=button id="Preview" style="font-family:Tahoma; font-size:9pt; width:100px" value="Preview" onclick="preview();"></td></tr>
-        <tr><td><input type=button id="Replay" style="font-family:Tahoma; font-size:9pt; width:100px" value="Replay" onclick="replayGame();"></td></tr>
-    </table>
-    <table cellspacing=3 cellpadding=0 border=0 style="font-family:Tahoma; font-size:9pt; font-weight: bold; margin-top:10">
-        <tr><td id=scoreBar style="color:#FFFFFF">Score : 0</td></tr>
-        <tr><td id=speedBar style="color:#FFFFFF">Speed : 1</td></tr>
-    </table>
-</td>
-</tr>
-</table>
-</td></tr></table>
-</BODY>
+ </tr>
+  <style>
+    input{
+    font-size:10pt;
+    width:70px;}
+    
+ </style>
+  <table cellspacing=3 cellpadding=0 border=1px style="margin-top:15" >
+        <tr ><td ><input type=button id="in" value="Play" onclick="return beginGame();"><input type=button value="Left" onclick=" keyControl(1);"><input type=button  value="Right" onclick="keyControl(2);"><input type=button  value="Down" onclick="keyControl(3);"><input type=button  value="R" onclick="keyControl(4);"><input type=button  value="Reset" onclick="resetGame();"></td></tr> 
+   </table>
+</B>
 </HTML>
 <script>
 function unSel()
@@ -471,6 +266,4 @@ function unSel()
     window.setTimeout("unSel()",100);
 }
 unSel();
- 
- 
 </script>
