@@ -54,9 +54,9 @@ function beginGame()
             setClass(i,j,"BK"); 
     gameState=1;
     randBar();
-    Play.disabled=true;
     window.clearInterval(mTimer);
     mTimer=window.setInterval("moveBar()",1000);
+    Play.disabled=true;
    
 }
  
@@ -65,47 +65,47 @@ function keyControl(x)
     if(gameState!=1)return;
     switch(x){
         case 1:{    //left
-            for(i=0;i<4;i++)if(PX[i]==0)return;
-            for(i=0;i<4;i++)if(getClass(PX[i]-1,PY[i])=="SB")return;
-            for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
-            for(i=0;i<4;i++)PX[i]=PX[i]-1;
-            for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
+            for(i=0;i<12;i++)if(PX[i]==0)return;
+            for(i=0;i<12;i++)if(getClass(PX[i]-1,PY[i])=="SB")return;
+            for(i=0;i<12;i++)setClass(PX[i],PY[i],"BK");
+            for(i=0;i<12;i++)PX[i]=PX[i]-1;
+            for(i=0;i<12;i++)setClass(PX[i],PY[i],"MB");
             break;}
             
         case 2:{    //right
-            for(i=0;i<4;i++)if(PX[i]==9)return;
-            for(i=0;i<4;i++)if(getClass(PX[i]+1,PY[i])=="SB")return;
-            for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
-            for(i=0;i<4;i++)PX[i]=PX[i]+1;
-            for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
+            for(i=0;i<12;i++)if(PX[i]==9)return;
+            for(i=0;i<12;i++)if(getClass(PX[i]+1,PY[i])=="SB")return;
+            for(i=0;i<12;i++)setClass(PX[i],PY[i],"BK");
+            for(i=0;i<12;i++)PX[i]=PX[i]+1;
+            for(i=0;i<12;i++)setClass(PX[i],PY[i],"MB");
             break;}
         case 3:{    //down
             moveBar();
             break;}
         case 4:{    //R
-            var preMBarX=new Array(4);
-            var preMBarY=new Array(4);
+            var preMBarX=new Array(12);
+            var preMBarY=new Array(12);
             var cx=Math.round((PX[0]+PX[1]+PX[2]+PX[3])/4);
             var cy=Math.round((PY[0]+PY[1]+PY[2]+PY[3])/4);
-            for(i=0;i<4;i++){
+            for(i=0;i<12;i++){
                 preMBarX[i]=Math.round(cx-cy+PY[i]);
                 preMBarY[i]=Math.round(cx+cy-PX[i]);
                 if(preMBarX[i]<0 || preMBarX[i]>9 || preMBarY[i]<0 || preMBarY[i]>15)return;
                 if(getClass(preMBarX[i],preMBarY[i])=="SB")return;
             }
-            for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
-            for(i=0;i<4;i++){
+            for(i=0;i<12;i++)setClass(PX[i],PY[i],"BK");
+            for(i=0;i<12;i++){
                 PX[i]=preMBarX[i];
                 PY[i]=preMBarY[i];
             }
-          for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
+          for(i=0;i<12;i++)setClass(PX[i],PY[i],"MB");
             break;}
     }
 }
  
 function delLine()
 {
-    for(i=0;i<4;i++)setClass(PX[i],PY[i],"SB");
+    for(i=0;i<12;i++)setClass(PX[i],PY[i],"SB");
     for(j=0;j<16;j++){
         dLine=true;
         for(i=0;i<10;i++){
@@ -135,16 +135,16 @@ function moveBar()
 {
     if(gameState!=1)return;
     dropLine=true;
-    for(i=0;i<4;i++)if(PY[i]==15)dropLine=false;
-    if(dropLine)for(i=0;i<4;i++)if(getClass(PX[i],PY[i]+1)=="SB")dropLine=false;
+    for(i=0;i<12;i++)if(PY[i]==15)dropLine=false;
+    if(dropLine)for(i=0;i<12;i++)if(getClass(PX[i],PY[i]+1)=="SB")dropLine=false;
     if(!dropLine){
         window.clearInterval(mTimer);
         delLine();
         return;
     }
-    for(i=0;i<4;i++)setClass(PX[i],PY[i],"BK");
-    for(i=0;i<4;i++)PY[i]=PY[i]+1;
-    for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
+    for(i=0;i<12;i++)setClass(PX[i],PY[i],"BK");
+    for(i=0;i<12;i++)PY[i]=PY[i]+1;
+    for(i=0;i<12;i++)setClass(PX[i],PY[i],"MB");
 }
 
 function fMnu(){return false;}
@@ -218,14 +218,14 @@ function randBar()
             PY[3]=0;
             break;}
     }
-    for(i=0;i<4;i++){
+    for(i=0;i<12;i++){
         if(getClass(PX[i],PY[i])!="BK"){
             window.clearInterval(mTimer);
             gameState=0;
             return;
         }
     }
-    for(i=0;i<4;i++)setClass(PX[i],PY[i],"MB");
+    for(i=0;i<12;i++)setClass(PX[i],PY[i],"MB");
 }
 </script>
 </head>
@@ -264,7 +264,7 @@ function randBar()
 function unSel()
 {
     document.execCommand("Unselect");
-    window.setTimeout("unSel()",100);
+    window.setTimeout("unSel()",1000);
 }
 unSel();
 </script>
