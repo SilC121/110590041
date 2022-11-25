@@ -215,7 +215,6 @@ function randBar()
     }
     for(i=0;i<4;i++){
         if(getClass(PX[i],PY[i])!="BK"){
-            alert("Game Over!");
             window.clearInterval(mTimer);
             Play.disabled=false;
             gameState=0;
