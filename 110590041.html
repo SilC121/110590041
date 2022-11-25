@@ -222,6 +222,7 @@ function randBar()
         if(getClass(PX[i],PY[i])!="BK"){
             window.clearInterval(mTimer);
             gameState=0;
+            Play.disabled=false;
             return;
         }
     }
