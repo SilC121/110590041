@@ -1,6 +1,9 @@
 <HTML>
-
-<script>
+<head>
+  <title>Tetris</title>
+</head>
+<body onload="start()">
+ <script>
 var shape, currShapeInfo, bak, run
 // shape ：7种形状中随机一种
 // currShapeInfo ：记录当前俄罗斯方块的一下信息
@@ -115,10 +118,8 @@ run = setInterval("down()", 400)
     color: #ccc;
 }
 </style>
-<head>
-  <title>Tetris</title>
-</head>
-<body>
-  <div id="box"></div>
+  <div id="box">
+    
+  </div>
 </body>
 </html>
