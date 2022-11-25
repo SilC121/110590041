@@ -119,7 +119,10 @@ run = setInterval("down()", 400)
 }
 </style>
   <div id="box">
-    
+    <button onmousedown="down()" onmouseup="clearmove()" ontouchstart="down()">Down</button>
+    <button onmousedown="move(2, 1)" onmouseup="clearmove()" ontouchstart="move(2, 1)">LEFT</button>
+    <button onmousedown="move(0.5, -1)" onmouseup="clearmove()" ontouchstart="move(0.5, -1)">RIGHT</button>
+    <button onmousedown="rotate(1)" onmouseup="clearmove()" ontouchstart="rotate(1)">R</button>
   </div>
 </body>
 </html>
