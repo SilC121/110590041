@@ -1,9 +1,7 @@
 <HTML>
 <HEAD>
 <title>Tetris</title>
-<script>window.resizeTo(410,450)</script>
 <style>
-<!--
 .MB
 {
     BACKGROUND-COLOR: firebrick;
@@ -33,7 +31,6 @@
     BORDER-TOP: deepskyblue thin solid;
     CURSOR: default
 }
--->
 </style>
 <script>
 <!--
@@ -133,7 +130,6 @@ function delLine()
     speed=1;
     outTime=1100-speed*100;
     scoreBar.innerHTML="Score : " + score;
-    speedBar.innerHTML="Speed : " + speed;
     window.clearInterval(mTimer);
     mTimer=window.setInterval("moveBar()",outTime);
 }
