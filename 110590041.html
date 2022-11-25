@@ -1,115 +1,67 @@
-<HTML>
-<head>
-  <title>Tetris</title>
-</head>
-<body onload="start()">
- <script>
-var shape, currShapeInfo, bak, run
-// shape ：7种形状中随机一种
-// currShapeInfo ：记录当前俄罗斯方块的一下信息
-// bak ：显示信息
-// run ：定时器
-
-// 共22行
-var map = eval("[" + Array(25).join("0x801,") + "0xfff]")
-
-// 俄罗斯方块7中形状，及其对应翻转后的形状
-var shapes = 
-  [[0x6600],
-  [0x2222,0xf00],
-  [0xc600,0x2640],
-  [0x6c00,0x4620],
-  [0x4460,0x2e0,0x6220,0x740],
-  [0x2260,0xe20,0x6440,0x4700],
-  [0x2620,0x720,0x2320,0x2700]]
-  
-function start(){   
-  shape = shapes[~~(Math.random() * 7)];
-  bak = currShapeInfo = {
-    fk: [], 
-    y: 0, 
-    x: 4, 
-    s: ~~(Math.random() * 4)
-  }
-  rotate(0)
-}
-
-function over(){    
-  document.onkeydown = null
-  clearInterval(run)
-  alert("GAME OVER")
-}
-
-function update(t){   
-  bak = {
-    fk: currShapeInfo.fk.slice(0), 
-    y: currShapeInfo.y, 
-    x: currShapeInfo.x, 
-    s: currShapeInfo.s
-  }
-  if(t) 
-    return
-  debugger
-  for(var i = 0, a2 = ""; i < 22; i++)
-    a2 += map[i].toString(2).slice(1, -1) + "<br/>"
-  for(var i = 0, n; i < 4; i++)
-    if(/([^0]+)/.test(bak.fk[i].toString(2).replace(/1/g, "\u25a1")))
-      a2 = a2.substr(0, n = (bak.y + i + 1) * 15 - RegExp.$_.length - 4) + RegExp.$1 + a2.slice(n + RegExp.$1.length)
-  document.getElementById("box").innerHTML = a2.replace(/1/g, "\u25a0").replace(/0/g, "\u3000")
-}
-
-
-function is(){  
-  for(var i = 0; i < 4; i++)
-    if((currShapeInfo.fk[i] & map[currShapeInfo.y + i]) != 0) return currShapeInfo = bak
-}
-
-function rotate(num){   
-  var flip = shape[currShapeInfo.s = (currShapeInfo.s + num) % shape.length]  // 翻转后的形状
-  for(var i = 0; i < 4; i++)
-    currShapeInfo.fk[i] = (flip >> (12 - i * 4) & 15) << currShapeInfo.x
-  update(is())
-}
-
-
-function down(){    
-  ++currShapeInfo.y
-  if (is()) {
-    for(var i = 0; i < 4 && currShapeInfo.y + i < 22; i++)
-      if((map[currShapeInfo.y+i] |= currShapeInfo.fk[i]) == 0xfff)
-        map.splice(currShapeInfo.y + i, 1), map.unshift(0x801)
-    if(map[1] != 0x801) return over()
-    start()
-  }
-  update()
-}
-
-
-function move(t, k){    
-  currShapeInfo.x += k
-  for(var i = 0; i < 4; i++)
-    currShapeInfo.fk[i] *= t
-  update(is())
-}
-start()
-run = setInterval("down()", 400)    
-
-</script>
-<style>
-   #box {
-    margin: 0px auto;
-    text-align: center;
-    width: 252px;
-    font: 25px/25px '宋体';
-    background: #333;
-    color: #ccc;
-}
-</style>
-  <div id="box",style="text-align:center;width:480px;">
-    <button onmousedown="down()" onmouseup="update()" ontouchstart="down()">Down</button>
-    <button onmousedown="move(2, 1)" onmouseup="update()" ontouchstart="move(2, 1)">LEFT</button>
-    <button onmousedown="move(0.5, -1)" onmouseup="update()" ontouchstart="move(0.5, -1)">RIGHT</button>
-    <button onmousedown="rotate(1)" onmouseup="update()" ontouchstart="rotate(1)">R</button>
-  </div>
-</body>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <title>挨踢方丈的俄罗斯方块 | itabbot</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="left">
+        <p>得分：<span id="score">0</span></p>
+        <p>消灭：<span id="rows">0</span></p>
+        <p id="guide">操作：</p>
+        <table>
+          <tr>
+            <td>↑</td>
+            <td>：旋转变形</td>
+          </tr>
+          <tr>
+            <td>←</td>
+            <td>：向左移动</td>
+          </tr>
+          <tr>
+            <td>→</td>
+            <td>：向右移动</td>
+          </tr>
+          <tr>
+            <td>↓</td>
+            <td>：加速掉落</td>
+          </tr>
+        </table>
+      </div>
+      <div id="centre">
+        <div id="mask"></div>
+        <div id="game-over">游戏结束</div>
+        <a id="start" href="javascript:TE.play();">开始游戏</a>
+        <a id="restart" href="javascript:TE.play();">再来一次</a>
+        <canvas id="game-canvas"> </canvas>
+      </div>
+      <div id="right">
+        <p id="next-msg">下一枚方块</p>
+        <canvas id="next-canvas"></canvas>
+        <p id="github">
+          <a target="_blank" href="https://github.com/itabbot/tetris">
+            <svg
+              aria-hidden="true"
+              role="img"
+              class="color-fg-default"
+              viewBox="0 0 16 16"
+              width="16"
+              height="16"
+              fill="currentColor"
+              style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+              ></path>
+            </svg>
+            挨踢方丈
+          </a>
+        </p>
+      </div>
+    </div>
+    <script src="./canvas.js"></script>
+    <script src="./script.js"></script>
+  </body>
 </html>
