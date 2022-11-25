@@ -23,14 +23,6 @@ var shapes =
   [0x2260,0xe20,0x6440,0x4700],
   [0x2620,0x720,0x2320,0x2700]]
   
-// 按键操作
-var keycode = {
-  "38": "rotate(1)",    // ↑ 翻转
-  "40": "down()",       // ↓ 加速下坠
-  "37": "move(2, 1)",   // ← 左移
-  "39": "move(0.5, -1)" // → 右移
-    }
-
 function start(){   
   shape = shapes[~~(Math.random() * 7)];
   bak = currShapeInfo = {
@@ -98,11 +90,6 @@ function move(t, k){
   for(var i = 0; i < 4; i++)
     currShapeInfo.fk[i] *= t
   update(is())
-}
-
-
-document.onkeydown = function(e) {    
-  eval(keycode[(e ? e : event).keyCode])
 }
 start()
 run = setInterval("down()", 400)    
